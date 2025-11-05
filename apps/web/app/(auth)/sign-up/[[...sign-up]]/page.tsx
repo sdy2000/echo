@@ -1,7 +1,7 @@
-import { SignUp } from "@clerk/nextjs";
+import { SingUpView } from "@/modules/auth/ui/views/sing-up-view";
 
 const Page = () => {
-  return <SignUp />;
+  return <SingUpView />;
 };
 
 export default Page;
