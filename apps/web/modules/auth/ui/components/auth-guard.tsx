@@ -1,8 +1,8 @@
 "use client";
 
+import { SingInView } from "@/modules/auth/ui/views/sing-in-view";
+import { AuthLayout } from "@/modules/auth/ui/layouts/auth-layout";
 import { Authenticated, AuthLoading, Unauthenticated } from "convex/react";
-import { AuthLayout } from "../layouts/auth-layout";
-import { SingInView } from "../views/sing-in-view";
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   return (
