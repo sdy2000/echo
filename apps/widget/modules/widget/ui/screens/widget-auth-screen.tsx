@@ -1,8 +1,19 @@
-import { WidgetHeader } from "@/modules/widget/ui/components/widget-header";
+"use client";
+
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { useMutation } from "convex/react";
+import { useAtomValue, useSetAtom } from "jotai";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@workspace/ui/components/input";
 import { api } from "@workspace/backend/_generated/api";
-import { Doc } from "@workspace/backend/_generated/dataModel";
 import { Button } from "@workspace/ui/components/button";
+import { Doc } from "@workspace/backend/_generated/dataModel";
+import { WidgetHeader } from "@/modules/widget/ui/components/widget-header";
+import {
+  contactSessionIdAtomFamily,
+  organizationIdAtom,
+} from "@/modules/widget/atoms/widget-atoms";
 import {
   Form,
   FormControl,
@@ -10,20 +21,18 @@ import {
   FormItem,
   FormMessage,
 } from "@workspace/ui/components/form";
-import { Input } from "@workspace/ui/components/input";
-import { useMutation } from "convex/react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
 });
 
-//? Temporary test organizationId, before we add state management
-const organizationId = "123";
-
 export const WidgetAuthScreen = () => {
+  const organizationId = useAtomValue(organizationIdAtom);
+  const setContactSessionId = useSetAtom(
+    contactSessionIdAtomFamily(organizationId || "")
+  );
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -60,7 +69,7 @@ export const WidgetAuthScreen = () => {
       metadata,
     });
 
-    console.log({contactSessionId});
+    setContactSessionId(contactSessionId);
   };
 
   return (
