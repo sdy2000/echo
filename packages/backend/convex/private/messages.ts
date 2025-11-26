@@ -45,7 +45,7 @@ export const enhanceResponse = action({
       ],
     });
 
-    return response.text
+    return response.text;
   },
 });
 
@@ -92,6 +92,12 @@ export const create = mutation({
       throw new ConvexError({
         code: "BAD_REQUEST",
         message: "Conversation resolved",
+      });
+    }
+
+    if (conversation.status === "unresolved") {
+      await ctx.db.patch(args.conversationId, {
+        status: "escalated",
       });
     }
 
